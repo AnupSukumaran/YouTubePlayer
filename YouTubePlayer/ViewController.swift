@@ -7,14 +7,66 @@
 //
 
 import UIKit
+import YouTubePlayer
 
 class ViewController: UIViewController {
-
+    
+    
+    @IBOutlet weak var videoPlayer: YouTubePlayerView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        //https://developers.google.com/youtube/player_parameters - reffer this site to config player like "controls" etc..
+        videoPlayer.playerVars = ["controls": 0, "playsinline": 1] as YouTubePlayerView.YouTubePlayerParameters
+        
+        let myVideoURL = NSURL(string: "https://www.youtube.com/watch?v=dM6u5FlZB70")
+        videoPlayer.loadVideoURL(myVideoURL! as URL)
+        videoPlayer.accessibilityElementsHidden = true
+        videoPlayer.delegate = self
+    }
+    
+    
+    @IBAction func playAction(_ sender: Any) {
+        
+        if videoPlayer.ready {
+            if videoPlayer.playerState != YouTubePlayerState.Playing {
+           //     videoPlayer.isHidden = true
+                print("playing😄")
+                
+                videoPlayer.play()
+                
+               // playButton.setTitle("Pause", for: .normal)
+            } else {
+                videoPlayer.pause()
+                print("Notplaying😄")
+             //   videoPlayer.isHidden = true
+               // playButton.setTitle("Play", for: .normal)
+            }
+        }
+        
     }
 
+}
 
+extension ViewController: YouTubePlayerDelegate {
+    
+    func playerReady(_ videoPlayer: YouTubePlayerView) {
+        if videoPlayer.ready {
+            if videoPlayer.playerState != YouTubePlayerState.Playing {
+                //     videoPlayer.isHidden = true
+                print("playing😄")
+                
+                videoPlayer.play()
+                
+                // playButton.setTitle("Pause", for: .normal)
+            } else {
+                videoPlayer.pause()
+                print("Notplaying😄")
+                //   videoPlayer.isHidden = true
+                // playButton.setTitle("Play", for: .normal)
+            }
+        }
+    }
+    
 }
 
