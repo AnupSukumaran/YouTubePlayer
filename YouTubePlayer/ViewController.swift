@@ -13,15 +13,19 @@ class ViewController: UIViewController {
     
     
     @IBOutlet weak var videoPlayer: YouTubePlayerView!
+    @IBOutlet weak var activityIndic: UIActivityIndicatorView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         //https://developers.google.com/youtube/player_parameters - reffer this site to config player like "controls" etc..
         videoPlayer.playerVars = ["controls": 0, "playsinline": 1] as YouTubePlayerView.YouTubePlayerParameters
+        videoPlayer.loadVideoID("dM6u5FlZB70")
         
-        let myVideoURL = NSURL(string: "https://www.youtube.com/watch?v=dM6u5FlZB70")
-        videoPlayer.loadVideoURL(myVideoURL! as URL)
-        videoPlayer.accessibilityElementsHidden = true
+//        let myVideoURL = NSURL(string: "https://www.youtube.com/watch?v=dM6u5FlZB70")
+//        videoPlayer.loadVideoURL(myVideoURL! as URL)
+       // videoPlayer.accessibilityElementsHidden = true
+        activityIndic.startAnimating()
+       // videoPlayer.isHidden = true
         videoPlayer.delegate = self
     }
     
@@ -52,6 +56,7 @@ extension ViewController: YouTubePlayerDelegate {
     
     func playerReady(_ videoPlayer: YouTubePlayerView) {
         if videoPlayer.ready {
+             activityIndic.stopAnimating()
             if videoPlayer.playerState != YouTubePlayerState.Playing {
                 //     videoPlayer.isHidden = true
                 print("playing😄")
